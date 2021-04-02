@@ -36,7 +36,7 @@
 		
 		DEFINE('SITE_NAME','Dirty Clean');
 		DEFINE('TITLE','Administrator Panel | '.SITE_NAME);
-		DEFINE('PREFIX','dc_');
+		DEFINE('PREFIX','');
 		DEFINE('COPYRIGHT',date("Y"));
 		DEFINE('LOGO', BASE_URL.'/images/logo.png');
 	/* BASE CONFIG */

@@ -14,7 +14,7 @@
 		
 		public function open_connection()
 		{
-			$this->connection = new mysqli("localhost", "innovins", "1751985", "dirty-clean");
+			$this->connection = new mysqli("localhost", "root", "", "taxmeasy");
 			if ($this->connection->connect_errno) {
 				die("Failed to connect to MySQL: (" . $this->connection->connect_errno . ") " . $this->connection->connect_error);
 			}
