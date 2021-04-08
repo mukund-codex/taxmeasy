@@ -325,6 +325,226 @@
 			return true;
 		}
 		// Banner end
+
+		// Employee Functions Starts
+
+		function addEmployee($data) {
+			
+			$name = $this->escape_string($this->strip_all($data['name']));
+			$email = $this->escape_string($this->strip_all($data['email']));
+			$mobile = $this->escape_string($this->strip_all($data['mobile']));
+			$designation = $this->escape_string($this->strip_all($data['designation']));
+			$username = $this->escape_string($this->strip_all($data['username']));
+			$password = $this->escape_string($this->strip_all($data['password']));
+			$password = password_hash($password, PASSWORD_DEFAULT);
+			$date = date("Y-m-d H:i:s");
+
+			$emp_prefix = "TME-";
+
+			$query = "select emp_code from employees order by id DESC";
+			$sql = $this->query($query);
+			$data = $this->fetch($sql);
+
+			if(!empty($data)) {
+				$previousEmpCode = $data['emp_code'];
+				$previousEmpInt = substr($previousEmpCode, strpos($previousEmpCode, "-") + 1);
+				$newEmpInt = $previousEmpInt + 1;
+				if(strlen($newEmpInt) < 3) {
+					$emp_code1 = sprintf("%03s", $newEmpInt);
+					$emp_code = $emp_prefix.$emp_code1;
+				}else {
+					$emp_code = $emp_prefix.$newEmpInt;
+				}
+			}else {
+				$emp_code = $emp_prefix."001";
+			}
+
+			$query = "insert into ".PREFIX."employees (name,email,mobile,designation,emp_code,username,password,created_at, updated_at) values ('$name', '$email', '$mobile','$designation', '$emp_code', '$username', '$password', '$date', '$date')";
+			return $this->query($query);
+		}
+
+		function getUniqueEmployeeById($id) {
+
+			$id = $this->escape_string($this->strip_all($id));
+			$query = "select * from ".PREFIX."employees where id='$id'";
+			$sql = $this->query($query);
+			return $this->fetch($sql);
+
+		}
+
+		function updateEmployee($data) {
+			
+			$id = $this->escape_string($this->strip_all($data['id']));
+			$name = $this->escape_string($this->strip_all($data['name']));
+			$email = $this->escape_string($this->strip_all($data['email']));
+			$mobile = $this->escape_string($this->strip_all($data['mobile']));
+			$designation = $this->escape_string($this->strip_all($data['designation']));
+			$username = $this->escape_string($this->strip_all($data['username']));
+			$password = $this->escape_string($this->strip_all($data['password']));
+			$password = password_hash($password, PASSWORD_DEFAULT);
+			$date = date("Y-m-d H:i:s");
+
+			$emp_prefix = "TME-";
+
+			$query = "select emp_code from employees order by id DESC";
+			$sql = $this->query($query);
+			$data = $this->fetch($sql);
+
+			if(!empty($data)) {
+				$previousEmpCode = $data['emp_code'];
+				$previousEmpInt = substr($previousEmpCode, strpos($previousEmpCode, "-") + 1);
+				$newEmpInt = $previousEmpInt + 1;
+				if(strlen($newEmpInt) < 3) {
+					$emp_code1 = sprintf("%03s", $newEmpInt);
+					$emp_code = $emp_prefix.$emp_code1;
+				}else {
+					$emp_code = $emp_prefix.$newEmpInt;
+				}
+			}else {
+				$emp_code = $emp_prefix."001";
+			}
+
+			$query = "update ".PREFIX."employees set name='$name',email='$email', designation='$designation', username='$username', password='$password', updated_at='$date' where id='$id'";
+			return $this->query($query);
+		}
+
+		function deleteEmployee($id) {
+			$id = $this->escape_string($this->strip_all($id));
+			$date = date("Y-m-d H:i:s");
+			$query = "update ".PREFIX."employees set deleted_at='$date' where id='$id'";
+			$this->query($query);
+			return true;
+		}
+
+		// Employee Functions Ends
+
+		// Client Function starts
+
+		function addClient($data) {
+			
+			$name = $this->escape_string($this->strip_all($data['name']));
+			$email = $this->escape_string($this->strip_all($data['email']));
+			$mobile = $this->escape_string($this->strip_all($data['mobile']));
+			$state = $this->escape_string($this->strip_all($data['state']));
+			$city = $this->escape_string($this->strip_all($data['city']));
+			$pincode = $this->escape_string($this->strip_all($data['pincode']));
+			$address = $this->escape_string($this->strip_all($data['address']));
+			$username = $this->escape_string($this->strip_all($data['username']));
+			$password = $this->escape_string($this->strip_all($data['password']));
+			$password = password_hash($password, PASSWORD_DEFAULT);
+			$date = date("Y-m-d H:i:s");
+
+			$query = "insert into ".PREFIX."clients (name, email, mobile, state, city, pincode, address, username, password,created_at, updated_at) values ('$name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$date', '$date')";
+			return $this->query($query);
+		}
+
+		function getUniqueClientById($id) {
+
+			$id = $this->escape_string($this->strip_all($id));
+			$query = "select * from ".PREFIX."clients where id='$id'";
+			$sql = $this->query($query);
+			return $this->fetch($sql);
+
+		}
+
+		function updateClient($data) {
+			
+			$id = $this->escape_string($this->strip_all($data['id']));
+			$name = $this->escape_string($this->strip_all($data['name']));
+			$email = $this->escape_string($this->strip_all($data['email']));
+			$mobile = $this->escape_string($this->strip_all($data['mobile']));
+			$designation = $this->escape_string($this->strip_all($data['designation']));
+			$username = $this->escape_string($this->strip_all($data['username']));
+			$password = $this->escape_string($this->strip_all($data['password']));
+			$password = password_hash($password, PASSWORD_DEFAULT);
+			$date = date("Y-m-d H:i:s");
+
+			$emp_prefix = "TME-";
+
+			$query = "select emp_code from clients order by id DESC";
+			$sql = $this->query($query);
+			$data = $this->fetch($sql);
+
+			if(!empty($data)) {
+				$previousEmpCode = $data['emp_code'];
+				$previousEmpInt = substr($previousEmpCode, strpos($previousEmpCode, "-") + 1);
+				$newEmpInt = $previousEmpInt + 1;
+				if(strlen($newEmpInt) < 3) {
+					$emp_code1 = sprintf("%03s", $newEmpInt);
+					$emp_code = $emp_prefix.$emp_code1;
+				}else {
+					$emp_code = $emp_prefix.$newEmpInt;
+				}
+			}else {
+				$emp_code = $emp_prefix."001";
+			}
+
+			$query = "update ".PREFIX."clients set name='$name',email='$email', designation='$designation', username='$username', password='$password', updated_at='$date' where id='$id'";
+			return $this->query($query);
+		}
+
+		function deleteClient($id) {
+			$id = $this->escape_string($this->strip_all($id));
+			$date = date("Y-m-d H:i:s");
+			$query = "update ".PREFIX."clients set deleted_at='$date' where id='$id'";
+			$this->query($query);
+			return true;
+		}
+
+		// Client Function Ends
+
+		// Client Details Function starts
+
+		function addClientDetails($data) {
+			
+			$client_id = $this->escape_string($this->strip_all($data['client_id']));
+			$alternate_number = $this->escape_string($this->strip_all($data['alternate_number']));
+			$pan_number = $this->escape_string($this->strip_all($data['pan_number']));
+			$aadhar_number = $this->escape_string($this->strip_all($data['aadhar_number']));
+			$bank_name = $this->escape_string($this->strip_all($data['bank_name']));
+			$ifsc_code = $this->escape_string($this->strip_all($data['ifsc_code']));
+			$yearly_income = $this->escape_string($this->strip_all($data['yearly_income']));
+			$total_expenses = $this->escape_string($this->strip_all($data['total_expenses']));
+			$mediclaim_amount = $this->escape_string($this->strip_all($data['mediclaim_amount']));
+			$insurance_amount = $this->escape_string($this->strip_all($data['insurance_amount']));
+			$rent_income = $this->escape_string($this->strip_all($data['rent_income']));
+			$housing_interest = $this->escape_string($this->strip_all($data['housing_interest']));
+			$housing_repayment = $this->escape_string($this->strip_all($data['housing_repayment']));
+			$gender = $this->escape_string($this->strip_all($data['gender']));
+			$income_type = $this->escape_string($this->strip_all($data['income_type']));
+			$document_type = $this->escape_string($this->strip_all($data['document_type']));
+			$date = date("Y-m-d H:i:s");
+
+			$query = "insert into ".PREFIX."client_details (client_id, alternate_number, pan_number, aadhar_number, bank_name, ifsc_code, yearly_income, total_expenses, mediclaim_amount, insurance_amount, rent_income, housing_interest, housing_repayment, gender, income_type, document_type, created_at) values ('$client_id', '$alternate_number', '$pan_number', '$aadhar_number','$bank_name', '$ifsc_code', '$yearly_income', '$total_expenses', '$mediclaim_amount', '$insurance_amount', '$rent_income', '$housing_interest', '$housing_repayment', '$gender', '$income_type', '$document_type', '$date')";
+			return $this->query($query);
+		}
+
+		function updateClientDetails($data) {
+			
+			$client_id = $this->escape_string($this->strip_all($data['client_id']));
+			$alternate_number = $this->escape_string($this->strip_all($data['alternate_number']));
+			$pan_number = $this->escape_string($this->strip_all($data['pan_number']));
+			$aadhar_number = $this->escape_string($this->strip_all($data['aadhar_number']));
+			$bank_name = $this->escape_string($this->strip_all($data['bank_name']));
+			$ifsc_code = $this->escape_string($this->strip_all($data['ifsc_code']));
+			$yearly_income = $this->escape_string($this->strip_all($data['yearly_income']));
+			$total_expenses = $this->escape_string($this->strip_all($data['total_expenses']));
+			$mediclaim_amount = $this->escape_string($this->strip_all($data['mediclaim_amount']));
+			$insurance_amount = $this->escape_string($this->strip_all($data['insurance_amount']));
+			$rent_income = $this->escape_string($this->strip_all($data['rent_income']));
+			$housing_interest = $this->escape_string($this->strip_all($data['housing_interest']));
+			$housing_repayment = $this->escape_string($this->strip_all($data['housing_repayment']));
+			$gender = $this->escape_string($this->strip_all($data['gender']));
+			$income_type = $this->escape_string($this->strip_all($data['income_type']));
+			$document_type = $this->escape_string($this->strip_all($data['document_type']));
+			$date = date("Y-m-d H:i:s");
+
+			$query = "update ".PREFIX."client_details set alternate_number='$alternate_number', pan_number='$pan_number', aadhar_number='$aadhar_number', bank_name='$bank_name', ifsc_code='$ifsc_code', yearly_income='$yearly_income', total_expenses='$total_expenses', mediclaim_amount='$mediclaim_amount', insurance_amount='$insurance_amount', rent_income='$rent_income', housing_interest='$housing_interest', housing_repayment='$housing_repayment', gender='$gender', income_type='$income_type', document_type='$document_type', updated_at='$date' where client_id='$client_id'";
+			return $this->query($query);
+		}
+
+		// Client Details Function Ends
+
 		// Welcome Content
 		function getUniqueWelcomeById($id){
 			$id = $this->escape_string($this->strip_all($id));

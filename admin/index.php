@@ -3,7 +3,7 @@
 	include 'include/admin-functions.php';
 	$admin = new AdminFunctions();
 	if($admin->sessionExists()){
-		header("location: banner-master.php");
+		header("location: dashboard.php");
 		exit();
 	}
 
@@ -13,7 +13,7 @@
 	
 	if(isset($_POST['signin'])){
 		if($csrf->check_valid('post')) {
-			$admin->adminlogin($_POST, "index_2.html");
+			$admin->adminlogin  ($_POST, "dashboard.php");
 		}
 	}
 ?>
