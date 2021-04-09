@@ -38,6 +38,17 @@
 	$sql = "SELECT * FROM ".PREFIX.$tableName." WHERE deleted_at IS NULL order by created_at DESC";
 	$results = $admin->query($sql);
 
+    $sql1 = "SELECT id, emp_code, name from employees where deleted_at IS NULL ORDER BY id";
+    $results1 = $admin->query($sql1);
+
+    if(isset($_POST['add'])) {
+		if($csrf->check_valid('post')) {
+            $result = $admin->assignClientEmp($_POST);
+			header("location:".$pageURL);
+			exit;
+		}
+	}
+
 ?>
 
 <!DOCTYPE html>
@@ -123,6 +134,7 @@
                                                             <th><em>Pincode</em></th>
                                                             <th><em>Address</em></th>
                                                             <th><em>Username</em></th>
+                                                            <th><em>Employee Code</em></th>
                                                             <th><em>Details</em></th>
                                                             <th><em>Created Date</em></th>
                                                             <th><em>Updated Date</em></th>
@@ -147,6 +159,25 @@
                                                             <td><i><?php echo $row['pincode'] ?></i></td>
                                                             <td><i><?php echo $row['address'] ?></i></td>
                                                             <td><i><?php echo $row['username'] ?></i></td>
+                                                            <td>
+                                                                <?php $client_id = $row['id']; 
+                                                                    $sql3 = "SELECT * FROM employees_work WHERE client_id = $client_id order by created_at DESC limit 1";
+                                                                    $results3 = $admin->query($sql3);
+                                                                    $data3 = $admin->fetch($results3);
+                                                                ?>
+
+                                                                <form method="post" style="width:165px;">
+                                                                    <select name="emp_id" id="emp_id" style="font-size:12px;padding:0px;">
+                                                                        <option>Select Employee</option>
+                                                                        <?php while($data = $admin->fetch($results1)) { ?>
+                                                                            <option value="<?php echo $data['id'] ?>"  <?php if($data3['employee_id'] == $data['id']) { echo "selected"; } ?>  ><?php echo $data['emp_code']; ?></option>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                    <input type="hidden" name="<?php echo $token_id; ?>" value="<?php echo $token_value; ?>" />
+                                                                    <input type="hidden" name="client_id" id="client_id" value="<?php echo $row['id']; ?>" >
+                                                                    <input type="submit" name="add" id="add" value="Add">
+                                                                </form>
+                                                            </td>
                                                             <td><i><a href="client-details-view.php?client_id=<?php echo $row['id'] ?>">View Details</a></i></td>
                                                             <td><i><?php echo $row['created_at'] ?></i></td>
                                                             <td><i><?php echo $row['updated_at'] ?></i></td>
@@ -167,7 +198,6 @@
                                 <div class="bottombar">
                                     <span>© 2021. Taxmeasy. All Rights Reserved.</span>
                                 </div>
-                                <!-- bottombar -->
                             </div>
                         </div>
                     </div>

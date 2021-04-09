@@ -545,6 +545,19 @@
 
 		// Client Details Function Ends
 
+		// Add client to employee function
+
+		function assignClientEmp($data) {
+			
+			$client_id = $this->escape_string($this->strip_all($data['client_id']));
+			$emp_id = $this->escape_string($this->strip_all($data['emp_id']));
+			$date = date("Y-m-d H:i:s");
+
+			$query = "insert into employees_work (client_id, employee_id, created_at) values('$client_id', '$emp_id', '$date')";
+			return $this->query($query);
+
+		}
+
 		// Welcome Content
 		function getUniqueWelcomeById($id){
 			$id = $this->escape_string($this->strip_all($id));
