@@ -2,6 +2,7 @@
 	include('database.php');
 	include('SaveImage.class.php');
 	include("smtp/class.phpmailer.php");
+	include('include/classes/CSRF.class.php');
 	error_reporting(0);
 	session_start();
 	/*
@@ -58,10 +59,10 @@
 				return false;
 			}
 		}
-		function adminLogin($data, $successURL, $failURL = "admin-login.php?failed") {
+		function adminLogin($data, $successURL, $failURL = "index.php?failed") {
 			$username = $this->escape_string($this->strip_all($data['username']));
 			$password = $this->escape_string($this->strip_all($data['password']));
-			$query = "select * from ".PREFIX."admin where username='".$username."'";
+			$query = "select * from ".PREFIX."clients where username='".$username."'";
 			$result = $this->query($query);
 
 			if($this->num_rows($result) == 1) { // only one unique user should be present in the system
@@ -69,7 +70,7 @@
 				if(password_verify($password, $row['password'])) {
 					$this->loginSession($row['id'], $row['fname'], $row['lname'], $this->userType,$row['role']);
 					$this->close_connection();
-					header("location: ".$successURL);
+					header("location: ".$successURL."?client_id=".$row['id']);
 					exit;
 				} else {
 					$this->close_connection();
@@ -111,7 +112,7 @@
 		}
 		function getUniqueUserById($userId) {
 			$userId = $this->escape_string($this->strip_all($userId));
-			$query = "select * from ".PREFIX."admin where id='".$userId."'";
+			$query = "select * from ".PREFIX."clients where id='".$userId."'";
 			$sql = $this->query($query);
 			return $this->fetch($sql);
 		}
@@ -533,6 +534,57 @@
 				exit;
 			}
 		}
+
+		function clientRegister($data) {
+			
+			$name = $this->escape_string($this->strip_all($data['name']));
+			$email = $this->escape_string($this->strip_all($data['email']));
+			$mobile = $this->escape_string($this->strip_all($data['mobile']));
+			$state = $this->escape_string($this->strip_all($data['state']));
+			$city = $this->escape_string($this->strip_all($data['city']));
+			$pincode = $this->escape_string($this->strip_all($data['pincode']));
+			$address = $this->escape_string($this->strip_all($data['address']));
+			$username = $this->escape_string($this->strip_all($data['username']));
+			$password = $this->escape_string($this->strip_all($data['password']));
+			$password = password_hash($password, PASSWORD_DEFAULT);
+			$date = date("Y-m-d H:i:s");
+
+			$added_by = 'self-registered';
+			$user_type = 'client';
+
+			$query = "insert into ".PREFIX."clients (name, email, mobile, state, city, pincode, address, username, password, added_by, user_type, created_at, updated_at) values ('$name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$added_by', '$user_type', '$date', '$date')";
+			return $this->query($query);
+
+		}
+
+		// Client Details Functions starts
+
+		function addClientDetails($data, $file) {
+			
+			$client_id = $this->escape_string($this->strip_all($data['client_id']));
+			$alternate_number = $this->escape_string($this->strip_all($data['alternate_number']));
+			$pan_number = $this->escape_string($this->strip_all($data['pan_number']));
+			$aadhar_number = $this->escape_string($this->strip_all($data['aadhar_number']));
+			$bank_name = $this->escape_string($this->strip_all($data['bank_name']));
+			$ifsc_code = $this->escape_string($this->strip_all($data['ifsc_code']));
+			$yearly_income = $this->escape_string($this->strip_all($data['yearly_income']));
+			$total_expenses = $this->escape_string($this->strip_all($data['total_expenses']));
+			$mediclaim_amount = $this->escape_string($this->strip_all($data['mediclaim_amount']));
+			$insurance_amount = $this->escape_string($this->strip_all($data['insurance_amount']));
+			$rent_income = $this->escape_string($this->strip_all($data['rent_income']));
+			$housing_interest = $this->escape_string($this->strip_all($data['housing_interest']));
+			$housing_repayment = $this->escape_string($this->strip_all($data['housing_repayment']));
+			$gender = $this->escape_string($this->strip_all($data['gender']));
+			$income_type = $this->escape_string($this->strip_all($data['income_type']));
+			$document_type = $this->escape_string($this->strip_all($data['document_type']));
+			$date = date("Y-m-d H:i:s");
+
+			$query = "insert into ".PREFIX."client_details (client_id, alternate_number, pan_number, aadhar_number, bank_name, ifsc_code, yearly_income, total_expenses, mediclaim_amount, insurance_amount, rent_income, housing_interest, housing_repayment, gender, income_type, document_type, created_at) values ('$client_id', '$alternate_number', '$pan_number', '$aadhar_number','$bank_name', '$ifsc_code', '$yearly_income', '$total_expenses', '$mediclaim_amount', '$insurance_amount', '$rent_income', '$housing_interest', '$housing_repayment', '$gender', '$income_type', '$document_type', '$date')";
+			return $this->query($query);
+
+		}
+
+		// client details function ends
 		
 		// === BANNER STARTS ===
 		function getAllBanners() {

@@ -7,7 +7,7 @@
 	// $addURL = 'home-carousel-add.php';
 	// $deleteURL = 'home-carousel-delete.php';
 	// $tableName = 'home_carousel';
-
+    $adminData = $admin->sessionExists();
 	if(!$loggedInUserDetailsArr = $admin->sessionExists()){
 		header("location: index.php");
 		exit();

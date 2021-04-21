@@ -434,7 +434,10 @@
 			$password = password_hash($password, PASSWORD_DEFAULT);
 			$date = date("Y-m-d H:i:s");
 
-			$query = "insert into ".PREFIX."clients (name, email, mobile, state, city, pincode, address, username, password,created_at, updated_at) values ('$name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$date', '$date')";
+			$added_by = 'admin';
+			$user_type = 'client';
+
+			$query = "insert into ".PREFIX."clients (name, email, mobile, state, city, pincode, address, username, password, added_by, user_type, created_at, updated_at) values ('$name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$added_by', '$user_type', '$date', '$date')";
 			return $this->query($query);
 		}
 
@@ -513,6 +516,7 @@
 			$gender = $this->escape_string($this->strip_all($data['gender']));
 			$income_type = $this->escape_string($this->strip_all($data['income_type']));
 			$document_type = $this->escape_string($this->strip_all($data['document_type']));
+			
 			$date = date("Y-m-d H:i:s");
 
 			$query = "insert into ".PREFIX."client_details (client_id, alternate_number, pan_number, aadhar_number, bank_name, ifsc_code, yearly_income, total_expenses, mediclaim_amount, insurance_amount, rent_income, housing_interest, housing_repayment, gender, income_type, document_type, created_at) values ('$client_id', '$alternate_number', '$pan_number', '$aadhar_number','$bank_name', '$ifsc_code', '$yearly_income', '$total_expenses', '$mediclaim_amount', '$insurance_amount', '$rent_income', '$housing_interest', '$housing_repayment', '$gender', '$income_type', '$document_type', '$date')";
@@ -537,6 +541,7 @@
 			$gender = $this->escape_string($this->strip_all($data['gender']));
 			$income_type = $this->escape_string($this->strip_all($data['income_type']));
 			$document_type = $this->escape_string($this->strip_all($data['document_type']));
+			
 			$date = date("Y-m-d H:i:s");
 
 			$query = "update ".PREFIX."client_details set alternate_number='$alternate_number', pan_number='$pan_number', aadhar_number='$aadhar_number', bank_name='$bank_name', ifsc_code='$ifsc_code', yearly_income='$yearly_income', total_expenses='$total_expenses', mediclaim_amount='$mediclaim_amount', insurance_amount='$insurance_amount', rent_income='$rent_income', housing_interest='$housing_interest', housing_repayment='$housing_repayment', gender='$gender', income_type='$income_type', document_type='$document_type', updated_at='$date' where client_id='$client_id'";
@@ -556,6 +561,19 @@
 			$query = "insert into employees_work (client_id, employee_id, created_at) values('$client_id', '$emp_id', '$date')";
 			return $this->query($query);
 
+		}
+
+		function generateRandStr($length) {
+			$randstr = "";
+			for($i = 0; $i < $length; $i++) {
+				$randnum = mt_rand(0,61);
+				if($randnum < 36) {
+					$randstr .= chr($randnum+55);
+				}else {
+					$randstr . chr($randnum + 61);
+				}
+			}
+			return strtolower($randstr);
 		}
 
 		// Welcome Content

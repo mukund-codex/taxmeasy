@@ -7,7 +7,9 @@
 	$pageURL = 'add-client.php';
 
 	if(!$loggedInUserDetailsArr = $admin->sessionExists()){
-		header("location: admin-login.php");
+        if($loggedInUserDetailsArr['user_type'] != 'admin') {
+		    header("location: admin-login.php");
+        }
 		exit();
 	}
 
@@ -37,6 +39,7 @@
 			exit;
 		}
 	}
+
 ?>
 
 <!DOCTYPE html>

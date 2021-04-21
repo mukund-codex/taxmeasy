@@ -136,6 +136,7 @@
                                                             <th><em>Username</em></th>
                                                             <th><em>Employee Code</em></th>
                                                             <th><em>Details</em></th>
+                                                            <th><em>Added By</em></th>
                                                             <th><em>Created Date</em></th>
                                                             <th><em>Updated Date</em></th>
                                                             <th><em>Action</em></th>
@@ -179,6 +180,7 @@
                                                                 </form>
                                                             </td>
                                                             <td><i><a href="client-details-view.php?client_id=<?php echo $row['id'] ?>">View Details</a></i></td>
+                                                            <td><i><?php echo $row['added_by'] ?></i></td>
                                                             <td><i><?php echo $row['created_at'] ?></i></td>
                                                             <td><i><?php echo $row['updated_at'] ?></i></td>
                                                             <td>
