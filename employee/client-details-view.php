@@ -206,15 +206,40 @@
                                                     </div>
                                                     <div class="col-md-3 col-sm-6 field">
                                                         <label> Gender </label>
-                                                        <input type="text" value="<?php echo $data['gender']; ?>" disabled>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="gender" id="flexRadioDefault1" value="Male" style="width:5%;height:13px;" <?php if($data['gender'] == 'Male') { echo "checked"; } ?> >
+                                                            <label class="form-check-label" for="flexRadioDefault1"> Male </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="gender" id="flexRadioDefault2" value="Female" style="width:5%;height:13px;" <?php if($data['gender'] == 'Female') { echo "checked"; } ?> >
+                                                            <label class="form-check-label" for="flexRadioDefault2"> Female </label>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-3 col-sm-6 field">
                                                         <label> Income Type </label>
-                                                        <input type="text" value="<?php echo $data['income_type']; ?>" disabled>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="income_type" id="flexRadioDefault1" value="Self Employed" style="width:5%;height:13px;" <?php if($data['income_type'] == 'Self Employed') { echo "checked"; } ?> >
+                                                            <label class="form-check-label" for="flexRadioDefault1"> Self Employed </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="income_type" id="flexRadioDefault2" value="Salaried" style="width:5%;height:13px;" <?php if($data['income_type'] == 'Salaried') { echo "checked"; } ?> >
+                                                            <label class="form-check-label" for="flexRadioDefault2"> Salaried </label>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-3 col-sm-6 field">
+                                                    <!-- <div class="col-md-3 col-sm-6 field">
                                                         <label> Document Type </label>
-                                                        <input type="text" value="<?php echo $data['document_type']; ?>" disabled>
+                                                        <input type="text" value="<?php //echo $data['document_type']; ?>" disabled>
+                                                    </div> -->
+                                                    <div class="col-md-3 col-sm-6 field">
+                                                         <label>Uploaded Documents<label><br>
+                                                        <?php $docSql = "SELECT * FROM client_documents WHERE client_id = ".$data['id'];
+                                                                $docQuery = $admin->query($docSql);
+                                                                $i = 1;
+                                                                while($docData = $admin->fetch($docQuery)) {
+                                                                    if(!empty($docData['document_url'])) {
+                                                        ?>
+                                                                <a href="<?php echo $docData['document_url']; ?>" target="_blank"> View Document <?php echo $i; ?></a> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <?php $i++; } } ?>
                                                     </div>
                                                 </div>
                                             </form>

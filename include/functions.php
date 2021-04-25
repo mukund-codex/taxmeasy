@@ -579,6 +579,28 @@
 			$document_type = $this->escape_string($this->strip_all($data['document_type']));
 			$date = date("Y-m-d H:i:s");
 
+			if(count($file['documents']['name']) > 0) {
+				$total = count($file['documents']['name']);
+				for( $i=0 ; $i < $total ; $i++ ) {
+
+					$tmpFilePath = $file['documents']['tmp_name'][$i];
+
+					//Make sure we have a file path
+					if ($tmpFilePath != ""){
+						$newFilePath = "documents/" . $file['documents']['name'][$i];
+
+						if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+
+							$imageSql = "insert into client_documents (client_id, document_url, created_at) values($client_id, '$newFilePath', '$date')";
+							$this->query($imageSql);
+
+						}
+
+					}
+
+				}
+			}
+
 			$query = "insert into ".PREFIX."client_details (client_id, alternate_number, pan_number, aadhar_number, bank_name, ifsc_code, yearly_income, total_expenses, mediclaim_amount, insurance_amount, rent_income, housing_interest, housing_repayment, gender, income_type, document_type, created_at) values ('$client_id', '$alternate_number', '$pan_number', '$aadhar_number','$bank_name', '$ifsc_code', '$yearly_income', '$total_expenses', '$mediclaim_amount', '$insurance_amount', '$rent_income', '$housing_interest', '$housing_repayment', '$gender', '$income_type', '$document_type', '$date')";
 			return $this->query($query);
 

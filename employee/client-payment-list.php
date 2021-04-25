@@ -2,23 +2,18 @@
 	include_once 'include/config.php';
 	include_once 'include/admin-functions.php';
 	$admin = new AdminFunctions();
-	$pageName = "Client List";
-	$pageURL = 'client-list.php';
-	$addURL = 'add-client.php';
-	$deleteURL = 'delete-client.php';
-	$tableName = 'clients';
+	$pageName = "Client Payment List";
+	$pageURL = 'client-payment-list.php';
+	$addURL = 'add-client-payment.php';
+	$deleteURL = 'delete-client-payments.php';
+	$tableName = 'client_payments';
 
-    $loggedInUserDetailsArr = $admin->sessionExists();
-    
-    if(empty($loggedInUserDetailsArr) && $loggedInUserDetailsArr['user_type'] != 'employee' ){
-        header("location: index.php");
+	if(!$loggedInUserDetailsArr = $admin->sessionExists()){
+		header("location: admin-login.php");
 		exit();
 	}
 
-    $emp_name = $loggedInUserDetailsArr['name'];
-    $emp_id = $loggedInUserDetailsArr['id'];
-
-	include_once 'csrf.class.php';
+	//include_once 'csrf.class.php';
 	$csrf = new csrf();
 	$token_id = $csrf->get_token_id();
 	$token_value = $csrf->get_token($token_id);
@@ -30,6 +25,8 @@
 	}
 	$linkParam = "";
 
+    $emp_name = $loggedInUserDetailsArr['name'];
+    $emp_id = $loggedInUserDetailsArr['id'];
 
 	$query = "SELECT COUNT(*) as num FROM ".PREFIX.$tableName;
 	$total_pages = $admin->fetch($admin->query($query));
@@ -40,8 +37,8 @@
 	$pagination = new Pagination();
 	$paginationArr = $pagination->generatePagination($pageURL, $pageNo, $total_pages, $linkParam);
 
-	$sql = "SELECT cl.* FROM ".PREFIX.$tableName." cl LEFT JOIN employees_work ew ON ew.client_id = cl.id WHERE ew.employee_id = '".$emp_id."' OR cl.added_by = '".$emp_name."' AND cl.deleted_at IS NULL order by cl.created_at DESC";
-	$results = $admin->query($sql);
+	$sql = "SELECT cp.*, cl.name, cl.email, cl.mobile FROM clients cl LEFT JOIN employees_work ew ON ew.client_id = cl.id JOIN client_payments cp ON cp.client_id=cl.id WHERE ew.employee_id = '".$emp_id."' OR cl.added_by = '".$emp_name."' AND cl.deleted_at IS NULL group by ew.id order by cl.created_at DESC";
+    $results = $admin->query($sql);
 
     $sql1 = "SELECT id, emp_code, name from employees where deleted_at IS NULL ORDER BY id";
     $results1 = $admin->query($sql1);
@@ -121,8 +118,8 @@
                                     </div>
                                     <div class="gap inner-bg">
                                         <div class="element-title">
-                                            <h4>Client List</h4>
-                                            <a href="add-client.php" title="" class="btn-st drk-blu-clr" style="float:right;margin-top:-20px;">Add Client</a>
+                                            <h4>Client Payment List</h4>
+                                            <a href="add-client-payment.php" title="" class="btn-st drk-blu-clr" style="float:right;margin-top:-20px;">Add Client Payment</a>
                                         </div>
                                         <div class="table-styles">
                                             <div class="widget">
@@ -134,13 +131,10 @@
                                                             <th><em>Name</em></th>
                                                             <th><em>Email</em></th>
                                                             <th><em>Mobile</em></th>
-                                                            <th><em>State</em></th>
-                                                            <th><em>City</em></th>
-                                                            <th><em>Pincode</em></th>
-                                                            <th><em>Address</em></th>
                                                             <th><em>Username</em></th>
-                                                            <th><em>Details</em></th>
-                                                            <th><em>Added By</em></th>
+                                                            <th><em>Total Payment Amount</em></th>
+                                                            <th><em>Paid Payment Amount</em></th>
+                                                            <th><em>Pending Payment Amount</em></th>
                                                             <th><em>Created Date</em></th>
                                                             <th><em>Updated Date</em></th>
                                                             <th><em>Action</em></th>
@@ -150,8 +144,6 @@
                                                     <?php
                                                         $x = (10*$pageNo)-9;
                                                         while($row = $admin->fetch($results)){
-                                                            $file_name = str_replace('', '-', strtolower( pathinfo($row['banner_img'], PATHINFO_FILENAME)));
-                                                            $ext = pathinfo($row['banner_img'], PATHINFO_EXTENSION);
                                                     ?>
                                                         <tr>
                                                             <td><i class="sngl-slct"></i></td>
@@ -159,18 +151,15 @@
                                                             <td><i><?php echo $row['name'] ?></i></td>
                                                             <td><i><?php echo $row['email'] ?></i></td>
                                                             <td><i><?php echo $row['mobile'] ?></i></td>
-                                                            <td><i><?php echo $row['state'] ?></i></td>
-                                                            <td><i><?php echo $row['city'] ?></i></td>
-                                                            <td><i><?php echo $row['pincode'] ?></i></td>
-                                                            <td><i><?php echo $row['address'] ?></i></td>
                                                             <td><i><?php echo $row['username'] ?></i></td>
-                                                            <td><i><a href="client-details-view.php?client_id=<?php echo $row['id'] ?>">View Details</a></i></td>
-                                                            <td><i><?php echo $row['added_by'] ?></i></td>
+                                                            <td><i><?php echo $row['total_amount'] ?></i></td>
+                                                            <td><i><?php echo $row['paid_amount'] ?></i></td>
+                                                            <td><i><?php echo $row['pending_amount'] ?></i></td>
                                                             <td><i><?php echo $row['created_at'] ?></i></td>
                                                             <td><i><?php echo $row['updated_at'] ?></i></td>
                                                             <td>
                                                                 <a href="<?php echo $addURL; ?>?edit&id=<?php echo $row['id'] ?>" name="edit" class="" title="Click to edit this row"><i class="fa fa-pencil"></i></a>
-                                                                <a class="" href="<?php echo $deleteURL; ?>?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete?');" title="Click to delete this row, this action cannot be undone."><i class="fa fa-trash"></i></a>
+                                                                <!-- <a class="" href="<?php echo $deleteURL; ?>?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete?');" title="Click to delete this row, this action cannot be undone."><i class="fa fa-trash"></i></a> -->
                                                             </td>
                                                         </tr>
                                                         <?php

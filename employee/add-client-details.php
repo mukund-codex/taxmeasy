@@ -46,9 +46,9 @@
 		if($csrf->check_valid('post')) {
             $id = trim($admin->escape_string($admin->strip_all($_POST['client_id'])));
             if(empty($data['client_id'])) {
-                $result = $admin->addClientDetails($_POST);
+                $result = $admin->addClientDetails($_POST, $_FILES);
             }else {
-                $result = $admin->updateClientDetails($_POST);
+                $result = $admin->updateClientDetails($_POST, $_FILES);
             }
 			header("location:".$pageURL."?updatesuccess&client_id=".$id);
 			exit;
@@ -135,7 +135,7 @@
                                             ?>
                                         </div>
                                         <div class="pnl-bdy billing-sec">
-                                            <form method="post">
+                                            <form role="form" action="" method="post" id="form" enctype="multipart/form-data">
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-6 field">
                                                         <label>Full Name </label>
@@ -215,21 +215,47 @@
                                                     </div>
                                                     <div class="col-md-3 col-sm-6 field">
                                                         <label> Gender </label>
-                                                        <input type="text" name="gender" value="<?php echo $data['gender']; ?>">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="gender" id="flexRadioDefault1" value="Male" style="width:5%;height:13px;" <?php if($data['gender'] == 'Male') { echo "checked"; } ?> >
+                                                            <label class="form-check-label" for="flexRadioDefault1"> Male </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="gender" id="flexRadioDefault2" value="Female" style="width:5%;height:13px;" <?php if($data['gender'] == 'Female') { echo "checked"; } ?> >
+                                                            <label class="form-check-label" for="flexRadioDefault2"> Female </label>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-3 col-sm-6 field">
                                                         <label> Income Type </label>
-                                                        <input type="text" name="income_type" value="<?php echo $data['income_type']; ?>">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="income_type" id="flexRadioDefault1" value="Self Employed" style="width:5%;height:13px;" <?php if($data['income_type'] == 'Self Employed') { echo "checked"; } ?> >
+                                                            <label class="form-check-label" for="flexRadioDefault1"> Self Employed </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="income_type" id="flexRadioDefault2" value="Salaried" style="width:5%;height:13px;" <?php if($data['income_type'] == 'Salaried') { echo "checked"; } ?> >
+                                                            <label class="form-check-label" for="flexRadioDefault2"> Salaried </label>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-3 col-sm-6 field">
+                                                    <!-- <div class="col-md-3 col-sm-6 field">
                                                         <label> Document Type </label>
                                                         <input type="text" name="document_type" value="<?php echo $data['document_type']; ?>">
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-md-3 col-sm-6 field"> 
                                                         <span class="upload-image">Upload Documents</span>
                                                         <label class="fileContainer"> <span>upload</span>
-                                                            <input type="file">
-                                                        </label>
+                                                            <input type="file" name="documents[]" class="form-control" id="exampleInputFile" multiple /><br>
+                                                        </label><br>
+                                                        
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-6 field">
+                                                        <label>Uploaded Documents<label><br>
+                                                        <?php $docSql = "SELECT * FROM client_documents WHERE client_id = ".$data['id'];
+                                                                $docQuery = $admin->query($docSql);
+                                                                $i = 1;
+                                                                while($docData = $admin->fetch($docQuery)) {
+                                                                    if(!empty($docData['document_url'])) {
+                                                        ?>
+                                                                <a href="<?php echo $docData['document_url']; ?>" target="_blank"> View Document <?php echo $i; ?></a> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <?php $i++; } } ?>
                                                     </div>
                                                     <div class="col-md-9 col-sm-6">
                                                     </div>

@@ -484,7 +484,7 @@
 
 		// Client Details Function starts
 
-		function addClientDetails($data) {
+		function addClientDetails($data, $file) {
 			
 			$client_id = $this->escape_string($this->strip_all($data['client_id']));
 			$alternate_number = $this->escape_string($this->strip_all($data['alternate_number']));
@@ -503,12 +503,34 @@
 			$income_type = $this->escape_string($this->strip_all($data['income_type']));
 			$document_type = $this->escape_string($this->strip_all($data['document_type']));
 			$date = date("Y-m-d H:i:s");
+
+			if(count($file['documents']['name']) > 0) {
+				$total = count($file['documents']['name']);
+				for( $i=0 ; $i < $total ; $i++ ) {
+
+					$tmpFilePath = $file['documents']['tmp_name'][$i];
+
+					//Make sure we have a file path
+					if ($tmpFilePath != ""){
+						$newFilePath = "../documents/" . $file['documents']['name'][$i];
+
+						if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+							// $filePath = "documents/" . $file['documents']['name'][$i];
+							$imageSql = "insert into client_documents (client_id, document_url, created_at) values($client_id, '$newFilePath', '$date')";
+							$this->query($imageSql);
+
+						}
+
+					}
+
+				}
+			}
 
 			$query = "insert into ".PREFIX."client_details (client_id, alternate_number, pan_number, aadhar_number, bank_name, ifsc_code, yearly_income, total_expenses, mediclaim_amount, insurance_amount, rent_income, housing_interest, housing_repayment, gender, income_type, document_type, created_at) values ('$client_id', '$alternate_number', '$pan_number', '$aadhar_number','$bank_name', '$ifsc_code', '$yearly_income', '$total_expenses', '$mediclaim_amount', '$insurance_amount', '$rent_income', '$housing_interest', '$housing_repayment', '$gender', '$income_type', '$document_type', '$date')";
 			return $this->query($query);
 		}
 
-		function updateClientDetails($data) {
+		function updateClientDetails($data, $file) {
 			
 			$client_id = $this->escape_string($this->strip_all($data['client_id']));
 			$alternate_number = $this->escape_string($this->strip_all($data['alternate_number']));
@@ -527,12 +549,74 @@
 			$income_type = $this->escape_string($this->strip_all($data['income_type']));
 			$document_type = $this->escape_string($this->strip_all($data['document_type']));
 			$date = date("Y-m-d H:i:s");
+
+			if(count($file['documents']['name']) > 0) {
+				$total = count($file['documents']['name']);
+				for( $i=0 ; $i < $total ; $i++ ) {
+
+					$tmpFilePath = $file['documents']['tmp_name'][$i];
+
+					//Make sure we have a file path
+					if ($tmpFilePath != ""){
+						$newFilePath = "../documents/" . $file['documents']['name'][$i];
+
+						if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+							// $filePath = "documents/" . $file['documents']['name'][$i];
+							$imageSql = "insert into client_documents (client_id, document_url, created_at) values($client_id, '$newFilePath', '$date')";
+							$this->query($imageSql);
+
+						}
+
+					}
+
+				}
+			}
 
 			$query = "update ".PREFIX."client_details set alternate_number='$alternate_number', pan_number='$pan_number', aadhar_number='$aadhar_number', bank_name='$bank_name', ifsc_code='$ifsc_code', yearly_income='$yearly_income', total_expenses='$total_expenses', mediclaim_amount='$mediclaim_amount', insurance_amount='$insurance_amount', rent_income='$rent_income', housing_interest='$housing_interest', housing_repayment='$housing_repayment', gender='$gender', income_type='$income_type', document_type='$document_type', updated_at='$date' where client_id='$client_id'";
 			return $this->query($query);
 		}
 
 		// Client Details Function Ends
+		
+		// CLient Payments Function Starts
+
+		function addClientPayments($data) {
+
+			$client_id = $this->escape_string($this->strip_all($data['client_id']));
+			$total_amount = $this->escape_string($this->strip_all($data['total_amount']));
+			$paid_amount = $this->escape_string($this->strip_all($data['paid_amount']));
+			$pending_amount = $this->escape_string($this->strip_all($data['pending_amount']));
+			$date = date("Y-m-d H:i:s");
+
+			$sql = "insert into client_payments (client_id, total_amount, paid_amount, pending_amount, created_at) values($client_id, '$total_amount', '$paid_amount', '$pending_amount', '$date')";
+			return $this->query($sql);
+
+		}
+
+		function updateClientPayments($data) {
+
+			$id = $this->escape_string($this->strip_all($data['id']));
+			$client_id = $this->escape_string($this->strip_all($data['client_id']));
+			$total_amount = $this->escape_string($this->strip_all($data['total_amount']));
+			$paid_amount = $this->escape_string($this->strip_all($data['paid_amount']));
+			$pending_amount = $this->escape_string($this->strip_all($data['pending_amount']));
+			$date = date("Y-m-d H:i:s");
+
+			$sql = "update client_payments set client_id = $client_id, total_amount = '$total_amount', paid_amount='$paid_amount', pending_amount='$pending_amount', updated_at='$date'";
+			return $this->query($sql);
+
+		}
+
+		function getUniqueClientPaymentsById($id) {
+
+			$query = "select * from client_payments where id = '$id'";
+			$sql = $this->query($query);
+			return $this->fetch($sql);
+
+		}
+
+		// Client Payments Function Ends
+
 
 		// Add client to employee function
 

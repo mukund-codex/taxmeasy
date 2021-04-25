@@ -1,6 +1,6 @@
 <div class="responsive-header">
     <div class="logo-area">
-        <ul class="notify-area">
+        <!-- <ul class="notify-area">
             <li>
                 <div class="nav-icon3"> <span></span> <span></span> <span></span>
                     <span></span> </div>
@@ -82,7 +82,7 @@
                             messages</a></span>
                 </div>
             </li>
-        </ul>
+        </ul> -->
 
         <div class="user-head">
             <div class="admin">
@@ -104,7 +104,7 @@
                 <span class="drop-bottom"><a href="#" title=""><i class="fa fa-sign-out"></i>log Out</a></span>
             </div>
         </div>
-        <ul class="seting-area">
+        <!-- <ul class="seting-area">
             <li class="langages">
                 <a title="" href="#">Eng</a>
                 <ul class="drop language">
@@ -116,7 +116,7 @@
                 </ul>
             </li>
             <li class="setting-panel"><a title="" href="#"><i class="icon-equalizer"></i></a></li>
-        </ul>
+        </ul> -->
     </div>
     <!-- <div class="t-search">
                                     <form method="post">

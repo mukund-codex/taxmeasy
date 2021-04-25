@@ -15,10 +15,14 @@
 		exit();
 	}
 
-    $sql1 = "select count(id) as total_client from clients where deleted_at IS NULL";
-    $results1 = $admin->query($sql1);
-    $clientData = $admin->fetch($results1);
+    $emp_name = $loggedInUserDetailsArr['name'];
+    $emp_id = $loggedInUserDetailsArr['id'];
 
+    $sql = "SELECT count(cl.id) as total_client FROM clients cl LEFT JOIN employees_work ew ON ew.client_id = cl.id WHERE ew.employee_id = '".$emp_id."' OR cl.added_by = '".$emp_name."' AND cl.deleted_at IS NULL order by cl.created_at DESC";
+    
+	$results1 = $admin->query($sql);
+    $clientData = $admin->fetch($results1);
+    
     $sql2 = "select count(id) as total_emp from employees where deleted_at IS NULL";
     $results2 = $admin->query($sql2);
     $empData = $admin->fetch($results2);
