@@ -2,11 +2,11 @@
 	include_once 'include/config.php';
 	include_once 'include/admin-functions.php';
 	$admin = new AdminFunctions();
-	$pageName = "Client Payment List";
-	$pageURL = 'client-payment-list.php';
-	$addURL = 'add-client-payment.php';
-	$deleteURL = 'delete-client-payments.php';
-	$tableName = 'client_payments';
+	$pageName = "Client Return List";
+	$pageURL = 'client-return-list.php';
+	$addURL = 'add-client-return.php';
+	$deleteURL = 'delete-client-return.php';
+	$tableName = 'client_returns';
 
 	$loggedInUserDetailsArr = $admin->sessionExists();
     
@@ -30,6 +30,7 @@
 	}
 	$linkParam = "";
 
+
 	$query = "SELECT COUNT(*) as num FROM ".PREFIX.$tableName;
 	$total_pages = $admin->fetch($admin->query($query));
 	$total_pages = $total_pages['num'];
@@ -39,8 +40,8 @@
 	$pagination = new Pagination();
 	$paginationArr = $pagination->generatePagination($pageURL, $pageNo, $total_pages, $linkParam);
 
-	$sql = "SELECT cp.*, cl.name, cl.email, cl.mobile FROM clients cl LEFT JOIN employees_work ew ON ew.client_id = cl.id JOIN client_payments cp ON cp.client_id=cl.id WHERE ew.employee_id = '".$emp_id."' OR cl.added_by = '".$emp_name."' AND cl.deleted_at IS NULL group by ew.id order by cl.created_at DESC";
-    $results = $admin->query($sql);
+	$sql = "SELECT cr.*, cl.name, cl.email, cl.mobile, cl.username FROM ".PREFIX.$tableName." cr JOIN clients cl ON cl.id = cr.client_id JOIN employees_work ew ON ew.client_id = cr.client_id WHERE cr.deleted_at = '0000-00-00 00:00:00' AND ew.employee_id = '".$emp_id."' OR cl.added_by = '".$emp_name."' order by cr.created_at DESC";
+	$results = $admin->query($sql);
 
     $sql1 = "SELECT id, emp_code, name from employees where deleted_at IS NULL ORDER BY id";
     $results1 = $admin->query($sql1);
@@ -120,8 +121,8 @@
                                     </div>
                                     <div class="gap inner-bg">
                                         <div class="element-title">
-                                            <h4>Client Payment List</h4>
-                                            <a href="add-client-payment.php" title="" class="btn-st drk-blu-clr" style="float:right;margin-top:-20px;">Add Client Payment</a>
+                                            <h4>Client Returns List</h4>
+                                            <a href="add-client-return.php" title="" class="btn-st drk-blu-clr" style="float:right;margin-top:-20px;">Add Client Tax Returns</a>
                                         </div>
                                         <div class="table-styles">
                                             <div class="widget">
@@ -134,9 +135,7 @@
                                                             <th><em>Email</em></th>
                                                             <th><em>Mobile</em></th>
                                                             <th><em>Username</em></th>
-                                                            <th><em>Total Payment Amount</em></th>
-                                                            <th><em>Paid Payment Amount</em></th>
-                                                            <th><em>Pending Payment Amount</em></th>
+                                                            <th><em>Tax Return Document</em></th>
                                                             <th><em>Created Date</em></th>
                                                             <th><em>Updated Date</em></th>
                                                             <th><em>Action</em></th>
@@ -154,14 +153,12 @@
                                                             <td><i><?php echo $row['email'] ?></i></td>
                                                             <td><i><?php echo $row['mobile'] ?></i></td>
                                                             <td><i><?php echo $row['username'] ?></i></td>
-                                                            <td><i><?php echo $row['total_amount'] ?></i></td>
-                                                            <td><i><?php echo $row['paid_amount'] ?></i></td>
-                                                            <td><i><?php echo $row['pending_amount'] ?></i></td>
+                                                            <td><i><a href="<?php echo $row['document_url']; ?>" target="_blank" > View Tax Return </a></i></td>
                                                             <td><i><?php echo $row['created_at'] ?></i></td>
                                                             <td><i><?php echo $row['updated_at'] ?></i></td>
                                                             <td>
-                                                                <a href="<?php echo $addURL; ?>?edit&id=<?php echo $row['id'] ?>" name="edit" class="" title="Click to edit this row"><i class="fa fa-pencil"></i></a>
-                                                                <!-- <a class="" href="<?php echo $deleteURL; ?>?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete?');" title="Click to delete this row, this action cannot be undone."><i class="fa fa-trash"></i></a> -->
+                                                                <!-- <a href="<?php echo $addURL; ?>?edit&id=<?php echo $row['id'] ?>" name="edit" class="" title="Click to edit this row"><i class="fa fa-pencil"></i></a> -->
+                                                                <a class="" href="<?php echo $deleteURL; ?>?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete?');" title="Click to delete this row, this action cannot be undone."><i class="fa fa-trash"></i></a>
                                                             </td>
                                                         </tr>
                                                         <?php

@@ -4,13 +4,14 @@
 	$admin = new AdminFunctions();
 	$pageName = "Client Payments";
 	$parentPageURL = 'client-payment-list.php';
-	$pageURL = 'add-client-payment.php';
+	$pageURL = 'add-client-return.php';
 
-	if(empty($loggedInUserDetailsArr) && $loggedInUserDetailsArr['user_type'] != 'employee' ){
-        header("location: index.php");
+	if(!$loggedInUserDetailsArr = $admin->sessionExists()){
+        if($loggedInUserDetailsArr['user_type'] != 'admin') {
+		    header("location: admin-login.php");
+        }
 		exit();
 	}
-
 
 	//include_once 'csrf.class.php';
 	$csrf = new csrf();
@@ -19,7 +20,7 @@
 
 	if(isset($_POST['register'])){
 		if($csrf->check_valid('post')) {			
-			$result = $admin->addClientPayments($_POST);
+			$result = $admin->addClientReturn($_POST, $_FILES);
 			header("location:".$pageURL."?registersuccess");
 			exit;
 		}
@@ -112,7 +113,7 @@
                                             <h4>Add Client</h4>
                                         </div>
                                         <div class="pnl-bdy billing-sec">
-                                            <form method="post">
+                                            <form role="form" action="" method="post" id="form" enctype="multipart/form-data">
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-6 field">
                                                         <label>Client <span>*</span> </label>
@@ -126,19 +127,13 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 field">
-                                                        <label>Total Amount <span>*</span> </label>
-                                                        <input type="text" name="total_amount" id="total_amount" placeholder="Total Amount" value="<?php if(isset($_GET['edit'])){ echo $data['total_amount']; }?>" required>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-6 field">
-                                                        <label>Paid Amount <span>*</span> </label>
-                                                        <input type="text" name="paid_amount" id="paid_amount" placeholder="Paid Amount" value="<?php if(isset($_GET['edit'])){ echo $data['paid_amount']; }?>" required>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-6 field">
-                                                        <label>Pending Amount <span>*</span> </label>
-                                                        <input type="text" name="pending_amount" id="pending_amount" placeholder="Pending Amount" value="<?php if(isset($_GET['edit'])){ echo $data['pending_amount']; }?>" required>
+                                                        <span class="upload-image">Upload Tax Return Document</span>
+                                                        <label class="fileContainer"> <span>upload</span>
+                                                            <input type="file" name="document_url" class="form-control" id="exampleInputFile" accept="application/pdf" /><br>
+                                                        </label><br>
                                                     </div>
                                                     <div class="col-md-10 col-sm-6 field">
-                                                        <input type="hidden" name="<?php echo $token_id; ?>" value="<?php echo $token_value; ?>" />
+                                                        <input type="hidden" name="<?php echo $token_id; ?>" class="form-control" id="exampleInputFile" value="<?php echo $token_value; ?>" />
                                                     </div>
                                                     <div class="col-md-2 col-sm-6 field">
                                                     <?php

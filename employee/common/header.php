@@ -9,6 +9,8 @@
                     <li><a href="client-list.php" title=""><i class="fa fa-bar-chart"></i><span>Client Details</span></a>
                     <li><a href="client-payment-list.php" title=""><i class="fa fa-bar-chart"></i><span>Client Payment</span></a>
                     </li>
+                    <li><a href="client-return-list.php" title=""><i class="fa fa-bar-chart"></i><span>Client Returns</span></a>
+                    </li>
                     </li>
                     <!-- <li> <a href="employee-list.php" title=""><i class="fa fa-bar-chart"></i><span>Employee
                                 Details</span></a> </li> -->

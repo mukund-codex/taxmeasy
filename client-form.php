@@ -59,6 +59,7 @@
         <div class="container mt-5">
             <div class="row p-5 box">
                 <form role="form" action="" method="post" id="form" enctype="multipart/form-data">
+                    <div style="float:right;"> <a href="view-tax-returns.php?client_id=<?php echo $client_id; ?>"> View Tax Return Documents </a> </div>
                     <div class="logo text-center"><img src="images/taxmeeasy-logo.png" alt="" width="50px">
                         <h2>TAXMEASY</h2><br><br>
                         <h4>Please enter Client details</h4>

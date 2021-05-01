@@ -553,7 +553,22 @@
 			$user_type = 'client';
 
 			$query = "insert into ".PREFIX."clients (name, email, mobile, state, city, pincode, address, username, password, added_by, user_type, created_at, updated_at) values ('$name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$added_by', '$user_type', '$date', '$date')";
-			return $this->query($query);
+			$this->query($query);
+
+			$mail = new PHPMailer();
+			$mail->IsSMTP();
+			$mail->Host = "taxmeasy.com";
+			$mail->SMTPAuth = true;
+			$mail->Port = 587;
+			$mail->Username = "taxmeasy@taxmeasy.com";
+			$mail->Password = "AfsN5yF#Vfqz";
+			$mail->SMTPDebug = 2;
+			$mail->From = "taxmeasy@taxmeasy.com";
+			$mail->AddAddress($email);
+			$mail->IsHTML(true);
+			$mail->Subject = "Welcome To Taxmeasy";
+			$mail->Body = "Welcome TO Taxmeasy";
+			$mail->Send();
 
 		}
 

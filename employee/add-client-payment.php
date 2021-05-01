@@ -6,12 +6,16 @@
 	$parentPageURL = 'client-payment-list.php';
 	$pageURL = 'add-client-payment.php';
 
-	if(!$loggedInUserDetailsArr = $admin->sessionExists()){
-        if($loggedInUserDetailsArr['user_type'] != 'admin') {
-		    header("location: admin-login.php");
-        }
+	$loggedInUserDetailsArr = $admin->sessionExists();
+    
+    if(empty($loggedInUserDetailsArr) && $loggedInUserDetailsArr['user_type'] != 'employee' ){
+        header("location: index.php");
 		exit();
 	}
+
+    $emp_name = $loggedInUserDetailsArr['name'];
+    $emp_id = $loggedInUserDetailsArr['id'];
+
 
 	//include_once 'csrf.class.php';
 	$csrf = new csrf();

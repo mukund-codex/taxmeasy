@@ -1,5 +1,5 @@
-database name : mukundav_taxmeasy
-username : mukundav_taxmeas
-password : Tg6Ak([#eH.y
+database name : taxmeasy
+username : taxmeasy
+password : Q21CK9XHR2N7
 
-$this->connection = new mysqli("localhost", "mukundav_taxmeas", "Tg6Ak([#eH.y", "mukundav_taxmeasy");
+$this->connection = new mysqli("localhost", "taxmeasy", "Q21CK9XHR2N7", "taxmeasy");

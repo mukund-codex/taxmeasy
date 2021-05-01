@@ -440,7 +440,22 @@
 			$user_type = 'client';
 
 			$query = "insert into ".PREFIX."clients (name, email, mobile, state, city, pincode, address, username, password, added_by, user_type, created_at, updated_at) values ('$name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$added_by', '$user_type', '$date', '$date')";
-			return $this->query($query);
+			$this->query($query);
+			
+			$mail = new PHPMailer();
+			$mail->IsSMTP();
+			$mail->Host = "taxmeasy.com";
+			$mail->SMTPAuth = true;
+			$mail->Port = 587;
+			$mail->Username = "taxmeasy@taxmeasy.com";
+			$mail->Password = "AfsN5yF#Vfqz";
+			$mail->SMTPDebug = 2;
+			$mail->From = "taxmeasy@taxmeasy.com";
+			$mail->AddAddress($email);
+			$mail->IsHTML(true);
+			$mail->Subject = "Welcome To Taxmeasy";
+			$mail->Body = "Welcome TO Taxmeasy";
+			$mail->Send();
 		}
 
 		function getUniqueClientById($id) {
@@ -617,6 +632,45 @@
 
 		// Client Payments Function Ends
 
+		// client return functions starts
+
+		function addClientReturn($data, $file) {
+		
+			$client_id = $this->escape_string($this->strip_all($data['client_id']));
+			$date = date("Y-m-d H:i:s");
+
+			if(!empty($file['document_url'])) {
+				$tmpFilePath = $file['document_url']['tmp_name'];
+
+				//Make sure we have a file path
+				if ($tmpFilePath != ""){
+					$newFilePath = "../client_returns/" . $file['document_url']['name'];
+
+					if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+
+						$sql = "insert into client_returns (client_id, document_url ,created_at) values ($client_id, '$newFilePath', '$date')";
+						return $this->query($sql);
+
+					}
+
+				}
+			}
+
+			return false;
+
+		}
+
+		function deleteClientReturn($id) {
+
+			$id = $this->escape_string($this->strip_all($id));
+			$date = date("Y-m-d H:i:s");
+
+			$sql = "update client_returns set deleted_at = '$date' where id = $id";
+			return $this->query($sql);
+
+		}
+
+		// client return functions ends
 
 		// Add client to employee function
 
