@@ -111,9 +111,17 @@
                                         <div class="pnl-bdy billing-sec">
                                             <form method="post">
                                                 <div class="row">
+                                                <div class="col-md-6 col-sm-6 field">
+                                                        <label>First Name <span>*</span> </label>
+                                                        <input type="text" name="name" id="name" placeholder="First Name" value="<?php if(isset($_GET['edit'])){ echo $data['name']; }?>" required>
+                                                    </div>
                                                     <div class="col-md-6 col-sm-6 field">
-                                                        <label>Full Name <span>*</span> </label>
-                                                        <input type="text" name="name" id="name" placeholder="Full Name" value="<?php if(isset($_GET['edit'])){ echo $data['name']; }?>" required>
+                                                        <label>Middle Name <span>*</span> </label>
+                                                        <input type="text" name="middel_name" id="middel_name" placeholder="Middle Name" value="<?php if(isset($_GET['edit'])){ echo $data['middle_name']; }?>" required>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 field">
+                                                        <label>Last Name <span>*</span> </label>
+                                                        <input type="text" name="last_name" id="last_name" placeholder="Last Name" value="<?php if(isset($_GET['edit'])){ echo $data['last_name']; }?>" required>
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 field">
                                                         <label>Email <span>*</span> </label>
@@ -146,6 +154,10 @@
                                                     <div class="col-md-6 col-sm-6 field">
                                                         <label>Password </label>
                                                         <input type="password" name="password" id="password" placeholder="Password" value="<?php if(isset($_GET['edit'])){ echo $data['password']; }?>" required>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 field">
+                                                        <label>Date of Birth </label>
+                                                        <input type="date" name="dob" id="dob" placeholder="" value="<?php if(isset($_GET['edit'])){ echo $data['dob']; }?>" required>
                                                     </div>
                                                     <div class="col-md-10 col-sm-6 field">
                                                         <input type="hidden" name="<?php echo $token_id; ?>" value="<?php echo $token_value; ?>" />

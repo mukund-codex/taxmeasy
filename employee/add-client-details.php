@@ -235,10 +235,10 @@
                                                             <label class="form-check-label" for="flexRadioDefault2"> Salaried </label>
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="col-md-3 col-sm-6 field">
-                                                        <label> Document Type </label>
-                                                        <input type="text" name="document_type" value="<?php echo $data['document_type']; ?>">
-                                                    </div> -->
+                                                    <div class="col-md-3 col-sm-6 field">
+                                                        <label> Nature of Business </label>
+                                                        <input type="text" name="nature_business" value="<?php echo $data['nature_business']; ?>">
+                                                    </div>
                                                     <div class="col-md-3 col-sm-6 field"> 
                                                         <span class="upload-image">Upload Documents</span>
                                                         <label class="fileContainer"> <span>upload</span>

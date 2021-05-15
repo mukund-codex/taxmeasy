@@ -538,6 +538,8 @@
 		function clientRegister($data) {
 			
 			$name = $this->escape_string($this->strip_all($data['name']));
+			$middle_name = $this->escape_string($this->strip_all($data['middle_name']));
+			$last_name = $this->escape_string($this->strip_all($data['last_name']));
 			$email = $this->escape_string($this->strip_all($data['email']));
 			$mobile = $this->escape_string($this->strip_all($data['mobile']));
 			$state = $this->escape_string($this->strip_all($data['state']));
@@ -546,13 +548,14 @@
 			$address = $this->escape_string($this->strip_all($data['address']));
 			$username = $this->escape_string($this->strip_all($data['username']));
 			$password = $this->escape_string($this->strip_all($data['password']));
+			$dob = $this->escape_string($this->strip_all($data['dob']));
 			$password = password_hash($password, PASSWORD_DEFAULT);
 			$date = date("Y-m-d H:i:s");
 
 			$added_by = 'self-registered';
 			$user_type = 'client';
 
-			$query = "insert into ".PREFIX."clients (name, email, mobile, state, city, pincode, address, username, password, added_by, user_type, created_at, updated_at) values ('$name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$added_by', '$user_type', '$date', '$date')";
+			$query = "insert into ".PREFIX."clients (name, middle_name, last_name, email, mobile, state, city, pincode, address, username, password, dob, added_by, user_type, created_at, updated_at) values ('$name', '$middle_name', '$last_name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$dob', '$added_by', '$user_type', '$date', '$date')";
 			$this->query($query);
 
 			$mail = new PHPMailer();
@@ -592,6 +595,7 @@
 			$gender = $this->escape_string($this->strip_all($data['gender']));
 			$income_type = $this->escape_string($this->strip_all($data['income_type']));
 			$document_type = $this->escape_string($this->strip_all($data['document_type']));
+			$nature_business = $this->escape_string($this->strip_all($data['nature_business']));
 			$date = date("Y-m-d H:i:s");
 
 			if(count($file['documents']['name']) > 0) {
@@ -616,7 +620,7 @@
 				}
 			}
 
-			$query = "insert into ".PREFIX."client_details (client_id, alternate_number, pan_number, aadhar_number, bank_name, ifsc_code, yearly_income, total_expenses, mediclaim_amount, insurance_amount, rent_income, housing_interest, housing_repayment, gender, income_type, document_type, created_at) values ('$client_id', '$alternate_number', '$pan_number', '$aadhar_number','$bank_name', '$ifsc_code', '$yearly_income', '$total_expenses', '$mediclaim_amount', '$insurance_amount', '$rent_income', '$housing_interest', '$housing_repayment', '$gender', '$income_type', '$document_type', '$date')";
+			$query = "insert into ".PREFIX."client_details (client_id, alternate_number, pan_number, aadhar_number, bank_name, ifsc_code, yearly_income, total_expenses, mediclaim_amount, insurance_amount, rent_income, housing_interest, housing_repayment, gender, income_type, document_type, nature_business, created_at) values ('$client_id', '$alternate_number', '$pan_number', '$aadhar_number','$bank_name', '$ifsc_code', '$yearly_income', '$total_expenses', '$mediclaim_amount', '$insurance_amount', '$rent_income', '$housing_interest', '$housing_repayment', '$gender', '$income_type', '$document_type', '$nature_business', '$date')";
 			return $this->query($query);
 
 		}

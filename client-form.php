@@ -182,6 +182,10 @@
                                         <a href="<?php echo $docData['document_url']; ?>" target="_blank"> View Document <?php echo $i; ?></a><br>
                                 <?php $i++; } } ?>
                                 <br>
+                                <input type="text" class="form-control" name="nature_business"
+                                    placeholder="Nature of Business"
+                                    value="<?php if(!empty($data['nature_business'])) { echo $data['nature_business']; } ?>">
+                                <br>
                                 <br><br><br>
                                 <input type="hidden" name="<?php echo $token_id; ?>"
                                     value="<?php echo $token_value; ?>" />

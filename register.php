@@ -53,7 +53,11 @@
                             <span>Please enter information</span>
                             <br>
                             <form method="post">
-                                <input type="text" class="form-control" name="name" placeholder="Complete Name">
+                                <input type="text" class="form-control" name="name" placeholder="First Name">
+                                <br>
+                                <input type="text" class="form-control" name="middle_name" placeholder="Middle Name">
+                                <br>
+                                <input type="text" class="form-control" name="last_name" placeholder="Last Name">
                                 <br>
                                 <input type="text" class="form-control" name="email" placeholder="Email Address">
                                 <br>
@@ -72,6 +76,9 @@
                                 <input type="text" class="form-control" name="pincode" placeholder="Pincode">
                                 <br>
                                 <input type="text" class="form-control" name="address" placeholder="Address">
+                                <br>
+                                <span>Date Of Birth</span>
+                                <input type="date" class="form-control" name="dob" placeholder="Date Of Birth">
 
                                 <input type="checkbox" id="checkbox">
                                 <label for="checkbox">I accept the <a href="#" title="">terms & Conditions</a></label>

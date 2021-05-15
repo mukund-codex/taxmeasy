@@ -424,22 +424,24 @@
 		function addClient($data) {
 			
 			$name = $this->escape_string($this->strip_all($data['name']));
+			$middle_name = $this->escape_string($this->strip_all($data['middle_name']));
+			$last_name = $this->escape_string($this->strip_all($data['last_name']));
 			$email = $this->escape_string($this->strip_all($data['email']));
 			$mobile = $this->escape_string($this->strip_all($data['mobile']));
 			$state = $this->escape_string($this->strip_all($data['state']));
 			$city = $this->escape_string($this->strip_all($data['city']));
 			$pincode = $this->escape_string($this->strip_all($data['pincode']));
 			$address = $this->escape_string($this->strip_all($data['address']));
+			$dob = $this->escape_string($this->strip_all($data['dob']));
 			$username = $this->escape_string($this->strip_all($data['username']));
 			$password = $this->escape_string($this->strip_all($data['password']));
 			$password = password_hash($password, PASSWORD_DEFAULT);
 			$date = date("Y-m-d H:i:s");
 
-			$loggedInUserDetailsArr = $this->sessionExists();
-			$added_by = $loggedInUserDetailsArr['name'];
+			$added_by = 'admin';
 			$user_type = 'client';
 
-			$query = "insert into ".PREFIX."clients (name, email, mobile, state, city, pincode, address, username, password, added_by, user_type, created_at, updated_at) values ('$name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$added_by', '$user_type', '$date', '$date')";
+			$query = "insert into ".PREFIX."clients (name, middle_name, last_name, email, mobile, state, city, pincode, address, username, password, added_by, user_type, dob, created_at, updated_at) values ('$name', '$middle_name', '$last_name', '$email', '$mobile','$state', '$city', '$pincode', '$address', '$username', '$password', '$added_by', '$user_type', '$dob', '$date', '$date')";
 			$this->query($query);
 			
 			$mail = new PHPMailer();
@@ -482,7 +484,7 @@
 			$password = password_hash($password, PASSWORD_DEFAULT);
 			$date = date("Y-m-d H:i:s");
 
-			$query = "update ".PREFIX."clients set name='$name',email='$email', mobile='$mobile', state='$state', city='$city', pincode='$pincode', address='$address', username = '$username', password = '$password',updated_at='$date' where id='$id'";
+			$query = "update ".PREFIX."clients set name='$name', middle_name='$middle_name', last_name='$last_name', dob='$dob', email='$email', mobile='$mobile', state='$state', city='$city', pincode='$pincode', address='$address', username = '$username', password = '$password',updated_at='$date' where id='$id'";
 			// echo $query;exit;
 			return $this->query($query);
 		}
@@ -516,7 +518,7 @@
 			$housing_repayment = $this->escape_string($this->strip_all($data['housing_repayment']));
 			$gender = $this->escape_string($this->strip_all($data['gender']));
 			$income_type = $this->escape_string($this->strip_all($data['income_type']));
-			$document_type = $this->escape_string($this->strip_all($data['document_type']));
+			$nature_business = $this->escape_string($this->strip_all($data['nature_business']));
 			$date = date("Y-m-d H:i:s");
 
 			if(count($file['documents']['name']) > 0) {
@@ -541,7 +543,7 @@
 				}
 			}
 
-			$query = "insert into ".PREFIX."client_details (client_id, alternate_number, pan_number, aadhar_number, bank_name, ifsc_code, yearly_income, total_expenses, mediclaim_amount, insurance_amount, rent_income, housing_interest, housing_repayment, gender, income_type, document_type, created_at) values ('$client_id', '$alternate_number', '$pan_number', '$aadhar_number','$bank_name', '$ifsc_code', '$yearly_income', '$total_expenses', '$mediclaim_amount', '$insurance_amount', '$rent_income', '$housing_interest', '$housing_repayment', '$gender', '$income_type', '$document_type', '$date')";
+			$query = "insert into ".PREFIX."client_details (client_id, alternate_number, pan_number, aadhar_number, bank_name, ifsc_code, yearly_income, total_expenses, mediclaim_amount, insurance_amount, rent_income, housing_interest, housing_repayment, gender, income_type, nature_business, created_at) values ('$client_id', '$alternate_number', '$pan_number', '$aadhar_number','$bank_name', '$ifsc_code', '$yearly_income', '$total_expenses', '$mediclaim_amount', '$insurance_amount', '$rent_income', '$housing_interest', '$housing_repayment', '$gender', '$income_type', '$nature_business', '$date')";
 			return $this->query($query);
 		}
 
@@ -562,7 +564,7 @@
 			$housing_repayment = $this->escape_string($this->strip_all($data['housing_repayment']));
 			$gender = $this->escape_string($this->strip_all($data['gender']));
 			$income_type = $this->escape_string($this->strip_all($data['income_type']));
-			$document_type = $this->escape_string($this->strip_all($data['document_type']));
+			$nature_business = $this->escape_string($this->strip_all($data['nature_business']));
 			$date = date("Y-m-d H:i:s");
 
 			if(count($file['documents']['name']) > 0) {
@@ -587,7 +589,7 @@
 				}
 			}
 
-			$query = "update ".PREFIX."client_details set alternate_number='$alternate_number', pan_number='$pan_number', aadhar_number='$aadhar_number', bank_name='$bank_name', ifsc_code='$ifsc_code', yearly_income='$yearly_income', total_expenses='$total_expenses', mediclaim_amount='$mediclaim_amount', insurance_amount='$insurance_amount', rent_income='$rent_income', housing_interest='$housing_interest', housing_repayment='$housing_repayment', gender='$gender', income_type='$income_type', document_type='$document_type', updated_at='$date' where client_id='$client_id'";
+			$query = "update ".PREFIX."client_details set alternate_number='$alternate_number', pan_number='$pan_number', aadhar_number='$aadhar_number', bank_name='$bank_name', ifsc_code='$ifsc_code', yearly_income='$yearly_income', total_expenses='$total_expenses', mediclaim_amount='$mediclaim_amount', insurance_amount='$insurance_amount', rent_income='$rent_income', housing_interest='$housing_interest', housing_repayment='$housing_repayment', gender='$gender', income_type='$income_type', nature_business='$nature_business', updated_at='$date' where client_id='$client_id'";
 			return $this->query($query);
 		}
 
