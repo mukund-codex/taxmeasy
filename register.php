@@ -81,7 +81,7 @@
                                 <input type="date" class="form-control" name="dob" placeholder="Date Of Birth">
 
                                 <input type="checkbox" id="checkbox">
-                                <label for="checkbox">I accept the <a href="#" title="">terms & Conditions</a></label>
+                                <label for="checkbox">I accept the <a href="#" title="">Terms & Conditions</a></label>
                                 <input type="hidden" name="<?php echo $token_id; ?>" value="<?php echo $token_value; ?>" />
                                 <button type="submit" name="register">sign up</button>
                             </form>
